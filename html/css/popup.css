@@ -1,0 +1,63 @@
+@font-face {
+	font-family: bookmark-icons;
+	src: url(../fonts/bookmark-search-icons.woff2) format('woff2'),
+		 url(../fonts/bookmark-search-icons.woff) format('woff'),
+		 url(../fonts/bookmark-search-icons.eot) format('eot'),
+		 url(../fonts/bookmark-search-icons.ttf) format('ttf'),
+		 url(../fonts/bookmark-search-icons.svg) format('svg');
+}
+
+:root {
+	--bookmark-font: 'bookmark-icons';
+	--bookmark: '\e900';
+	--folder: '\e901';
+}
+
+html {
+	max-width: 500px;
+}
+
+#bookmark-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#bookmark-list-container {
+	display: flex;
+	flex-direction: column;
+}
+
+#bookmark-list-container #bookmark_list li {
+	display: flex;
+	align-items: center;
+}
+
+#bookmark-list-container #bookmark_list li.bookmark-folder {
+	flex-wrap: wrap;
+}
+
+.bookmark-title,
+.bookmark-folder-title {
+	max-width: 30ch;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-left: 5px;
+}
+
+#bookmark_list .bookmark-folder-list {
+	width: 100%;
+}
+
+#bookmark_list .bookmark-folder::before {
+	font-family: var(--bookmark-font);
+	content: var(--folder);
+	font-size: 18px;
+	font-weight: 700;
+}
+
+#bookmark_list li:not(.bookmark-folder)::before {
+	font-family: var(--bookmark-font);
+	content: var(--bookmark);
+}

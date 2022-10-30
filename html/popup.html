@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/popup.css" />
+  </head>
+  <body>
+    <template id="bookmark_list_template">
+      <li>
+        <a>
+          <h3 class="bookmark-title">Bookmark Title</h3>
+        </a>
+      </li>
+    </template>
+	<template id="bookmark_list_folder_template">
+		<li class="bookmark-folder">
+			<h3 class="bookmark-folder-title"></h3>
+			<ul class="bookmark-folder-list"></ul>
+		</li>
+	</template>
+	</template>
+
+	<section id="bookmark-container">
+		<header>
+			<h1 id="bookmark-header">Bookmark List</h1>
+		</header>
+		<main id="bookmark-list-container">
+			<input type="text" name="bookmark_search" id="bookmark_search" placeholder="Add your search terms here" />
+			<ul id="bookmark_list"></ul>
+		</main>
+	</section>
+    <script src="../src/popup.js" type="module"></script>
+  </body>
+</html>
