@@ -127,19 +127,34 @@ document.getElementById('bookmark_search').addEventListener('change', (event) =>
 				return;
 			}
 
+			var start = performance.now();
 			resetList();
+			var end = performance.now();
+			console.log(`Resetting list took ${end - start} seconds`);
+
+			start = performance.now();
 			var bookmarkMapping = getBookmarkMappings(bookmarks);
+			end = performance.now();
+			console.log(`Getting bookmark mappings took ${end - start} seconds`);
+
+			start = performance.now();
 			var regex = new RegExp(inputString, 'gi');
 			var bookmarks = [];
-			bookmarkMapping.forEach((value, key) => {
+			var bookmarkKeys = [...bookmarkMapping.keys()];
+			bookmarkKeys.forEach((key) => {
 				console.log(typeof key);
 				if(regex.test(key)) {
-					bookmarks.push(value);
+					bookmarks.push(bookmarkMapping.get(key));
 				}
 			});
+			end = performance.now();
+			console.log(`Searching for bookmarks took ${end - start} seconds`);
 
 			if(bookmarks.length > 0) {
+				start = performance.now();
 				renderBookmarks(bookmarks);
+				end = performance.now();
+				console.log(`Rendering bookmarks took ${end - start} seconds`);
 			}
 		});
 	}, 500);
