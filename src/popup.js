@@ -37,10 +37,10 @@ function getBookmarkContainerFragment(parentBookmark) {
 	const content = template.content;
 	var fragment = content.firstElementChild.cloneNode(true);
 	var bookmarks = parentBookmark.children;
-	var bookmarkFragments = new Set();
+	var bookmarkFragments = [];
 	for(let bookmark of bookmarks) {
 		var childFragment = getBookmarkContainerFragment(bookmark);
-		bookmarkFragments.add(childFragment);
+		bookmarkFragments.push(childFragment);
 	}
 
 	fragment.querySelector('.bookmark-folder-title').textContent = parentBookmark.title;
@@ -49,39 +49,35 @@ function getBookmarkContainerFragment(parentBookmark) {
 }
 
 function addBookmarkToSet(bookmarkFragments, fragment) {
-	if(fragment instanceof Set) {
+	if(Array.isArray(fragment)) {
 		for(let fragmentInstance of fragment) {
 			addBookmarkToSet(bookmarkFragments, fragmentInstance);
 		}
 
 		return bookmarkFragments;
 	} else {
-		bookmarkFragments.add(fragment);
+		bookmarkFragments.push(fragment);
 		return bookmarkFragments;
 	}
 }
 
 function getBookmarkMap(bookmark) {
-	var bookmarkMap = new Map();
+	var bookmarkMap = [];
 	if(bookmark.children == null || bookmark.children.length <= 0) {
-		bookmarkMap.set(bookmark.title, bookmark);
+		bookmarkMap.push(bookmark);
 	} else {
 		var childBookmarkMap = getBookmarkMappings(bookmark.children);
-		childBookmarkMap.forEach((value, key) => {
-			bookmarkMap.set(key, value);
-		});
+		bookmarkMap.push(...childBookmarkMap);
 	}
 
 	return bookmarkMap;
 }
 
 function getBookmarkMappings(bookmarks) {
-	var bookmarkMappings = new Map();
+	var bookmarkMappings = []
 	for(let bookmark of bookmarks) {
 		var bookmarkMap = getBookmarkMap(bookmark);
-		bookmarkMap.forEach((value, key) => {
-			bookmarkMappings.set(key, value);
-		});
+		bookmarkMappings.push(...bookmarkMap);
 	}
 
 	return bookmarkMappings;
@@ -92,13 +88,13 @@ function renderBookmarks(bookmarks) {
 		return;
 	}
 
-	var bookmarkFragments = new Set();
+	var bookmarkFragments = [];
 	for(let bookmark of bookmarks) {
 		var fragment = getBookmarkContainerFragment(bookmark);
 		addBookmarkToSet(bookmarkFragments, fragment);
 	}
 
-	if(bookmarkFragments.size > 0) {
+	if(bookmarkFragments.length > 0) {
 		document.getElementById('bookmark_list').append(...bookmarkFragments);
 	}
 }
@@ -111,50 +107,36 @@ function resetList() {
 }
 
 const bookmarks = await getBookmarks();
+console.log(bookmarks);
 renderBookmarks(bookmarks);
+var regex;
 
 var searchTimeout;
-document.getElementById('bookmark_search').addEventListener('change', (event) => {
+document.getElementById('bookmark_search').addEventListener('input', (event) => {
 	clearTimeout(searchTimeout);
 	searchTimeout = setTimeout(() => {
 		getBookmarks().then((bookmarks) => {
+			resetList();
 			if(bookmarks == null || bookmarks.length <= 0) {
+				renderBookmarks(bookmarks);
 				return;
 			}
 
 			var inputString = document.getElementById('bookmark_search').value.trim();
 			if(inputString.length <= 0) {
+				renderBookmarks(bookmarks);
 				return;
 			}
 
-			var start = performance.now();
-			resetList();
-			var end = performance.now();
-			console.log(`Resetting list took ${end - start} seconds`);
-
-			start = performance.now();
 			var bookmarkMapping = getBookmarkMappings(bookmarks);
-			end = performance.now();
-			console.log(`Getting bookmark mappings took ${end - start} seconds`);
-
-			start = performance.now();
-			var regex = new RegExp(inputString, 'gi');
-			var bookmarks = [];
-			var bookmarkKeys = [...bookmarkMapping.keys()];
-			bookmarkKeys.forEach((key) => {
-				console.log(typeof key);
-				if(regex.test(key)) {
-					bookmarks.push(bookmarkMapping.get(key));
-				}
+			regex = new RegExp(inputString, 'i'); // Note: The global flag cannot be used here due to the 'sticky' nature of javascript regex objects -_-
+			var flatBookmarks = bookmarkMapping.filter((map) => {
+				var test = regex.test(map.title);
+				return test;
 			});
-			end = performance.now();
-			console.log(`Searching for bookmarks took ${end - start} seconds`);
 
-			if(bookmarks.length > 0) {
-				start = performance.now();
-				renderBookmarks(bookmarks);
-				end = performance.now();
-				console.log(`Rendering bookmarks took ${end - start} seconds`);
+			if(flatBookmarks.length > 0) {
+				renderBookmarks(flatBookmarks);
 			}
 		});
 	}, 500);
