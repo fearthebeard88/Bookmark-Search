@@ -1,3 +1,5 @@
+import {get} from './storage.js';
+
 async function getBookmarks() {
 	let bookmarksCollection  = await chrome.bookmarks.getTree();
 	if(bookmarksCollection.length <= 0) {
@@ -113,7 +115,6 @@ async function openPage(targetUrl) {
 	}
 
 	let currentTab = currentTabArray[0];
-	console.log(currentTab);
 	if(currentTab.url.toLowerCase() === 'chrome://newtab/') {
 		chrome.tabs.update(currentTab.id, {url: targetUrl});
 	} else {
@@ -135,11 +136,12 @@ async function openSettings(event) {
 }
 
 const bookmarks = await getBookmarks();
-console.log(bookmarks);
 renderBookmarks(bookmarks);
+var searchMethod = await get('searchType', 'contains');
+searchMethod = searchMethod.searchType;
 var regex;
-
 var searchTimeout;
+
 document.getElementById('bookmark_search').addEventListener('input', (event) => {
 	clearTimeout(searchTimeout);
 	searchTimeout = setTimeout(() => {
@@ -157,7 +159,18 @@ document.getElementById('bookmark_search').addEventListener('input', (event) => 
 			}
 
 			var bookmarkMapping = getBookmarkMappings(bookmarks);
-			regex = new RegExp(inputString, 'i'); // Note: The global flag cannot be used here due to the 'sticky' nature of javascript regex objects -_-
+			switch(searchMethod.toUpperCase()) {
+				case 'EQUALS':
+					regex = new RegExp(`^${inputString}$`, 'i');
+					break;
+				case 'STARTS':
+					regex = new RegExp(`^${inputString}`, 'i');
+					break;
+				default:
+					regex = new RegExp(inputString, 'i');
+					break;
+			}
+			
 			var flatBookmarks = bookmarkMapping.filter((map) => {
 				var test = regex.test(map.title);
 				return test;
