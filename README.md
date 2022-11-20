@@ -11,7 +11,7 @@ You can configure which search method you want to use in the chrome extension se
 
 ## Note
 This extension is still under active development, and while it is fully functional it is not yet complete. The checklist below indicates what needs to be finished before the first release will be created:
-- [ ] Update the options page status message so it no longer pushed content down
+- [ ] Update the options page status message so it no longer pushes content down
 - [ ] Update the save method for options page so it runs without having to click a button
 - [ ] Minify the javascript and css files and update all the includes to use the minified files
 - [ ] Add some kind of indication of which folder a bookmark is from in the search results for duplicate bookmark names
