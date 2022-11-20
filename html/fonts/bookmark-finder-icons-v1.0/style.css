@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'bookmark-finder-icons';
+  src:  url('fonts/bookmark-finder-icons.eot?1m8mcn');
+  src:  url('fonts/bookmark-finder-icons.eot?1m8mcn#iefix') format('embedded-opentype'),
+    url('fonts/bookmark-finder-icons.ttf?1m8mcn') format('truetype'),
+    url('fonts/bookmark-finder-icons.woff?1m8mcn') format('woff'),
+    url('fonts/bookmark-finder-icons.svg?1m8mcn#bookmark-finder-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'bookmark-finder-icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bookmark_icon:before {
+  content: "\e900";
+}
+.icon-folder_icon:before {
+  content: "\e901";
+}
+.icon-settings-icons:before {
+  content: "\e902";
+}

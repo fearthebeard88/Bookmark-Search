@@ -106,6 +106,34 @@ function resetList() {
 	}
 }
 
+async function openPage(targetUrl) {
+	let currentTabArray = await chrome.tabs.query({active: true, currentWindow: true});
+	if(currentTabArray == undefined) {
+		return false;
+	}
+
+	let currentTab = currentTabArray[0];
+	console.log(currentTab);
+	if(currentTab.url.toLowerCase() === 'chrome://newtab/') {
+		chrome.tabs.update(currentTab.id, {url: targetUrl});
+	} else {
+		chrome.tabs.create({url: targetUrl});
+	}
+	
+	window.close();
+}
+
+async function openBookmark(event) {
+	event.preventDefault();
+	let element = event.target.closest('a');
+	let targetUrl = element.getAttribute('href');
+	openPage(targetUrl);
+}
+
+async function openSettings(event) {
+	chrome.runtime.openOptionsPage();
+}
+
 const bookmarks = await getBookmarks();
 console.log(bookmarks);
 renderBookmarks(bookmarks);
@@ -141,3 +169,14 @@ document.getElementById('bookmark_search').addEventListener('input', (event) => 
 		});
 	}, 500);
 });
+
+document.getElementById('options_link').addEventListener('click', (event) => {
+	if (chrome.runtime.openOptionsPage) {
+	  	chrome.runtime.openOptionsPage();
+	} else {
+	  	window.open(chrome.runtime.getURL('options.html'));
+	}
+});
+
+document.getElementById('bookmark_list').addEventListener('click', openBookmark);
+document.getElementById('options_link').addEventListener('click', openSettings);

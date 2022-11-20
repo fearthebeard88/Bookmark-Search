@@ -11,6 +11,7 @@
 	--bookmark-font: 'bookmark-icons';
 	--bookmark: '\e900';
 	--folder: '\e901';
+	--gear: '\e902';
 }
 
 html {
@@ -60,4 +61,21 @@ html {
 #bookmark_list li:not(.bookmark-folder)::before {
 	font-family: var(--bookmark-font);
 	content: var(--bookmark);
+}
+
+#bookmark_list a {
+	display: block;
+}
+
+#options_link_container {
+	margin: 0 0 5px;
+}
+
+#options_link {
+	display: flex;
+}
+
+#options_link::before {
+	font-family: var(--bookmark-font);
+	content: var(--gear);
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/options.css" />
+	</head>
+	<body>
+		<section>
+			<main>
+				<div id="status"></div>
+				<div id="search_type">
+					<span>Search Type: </span>
+					<select id="search_type_options">
+						<option value="contains" title="Search for bookmarks containing inputed text">Contains</option>
+						<option value="equals" title="Search for bookmarks with titles that match inputed text exactly">Equals</option>
+						<option value="starts" title="Search for bookmarks with titles starting with inputed text">Starts With</option>
+						<option value="regex" title="Search for bookmarks with your own custom regex">Regular Expression</option>
+					</select>
+				</div>
+				<div id="save_button_container">
+					<button id="save_button">Save</button>
+				</div>
+			</main>
+		</section>
+		<script src="../src/options.js" type="module"></script>
+	</body>
+</html>
