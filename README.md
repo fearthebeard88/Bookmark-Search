@@ -7,6 +7,8 @@ This chrome extension is designed to help searching through bookmarks. Each sear
 - Equals (Exact match)
 - Starts with
 
+"Equals" and "Starts with" are pretty self explanatory. "Contains" for the most part is to, but it is worth noting that there is nothing stopping you from using a custom regular expression (no flags though).
+
 You can configure which search method you want to use in the chrome extension settings page, which can be found by going to your [Chrome Extensions](chrome://extensions) and navigating to this extension or by clicking the "gear" icon in the top of the extensions popup.
 
 ## Note
