@@ -1,11 +1,15 @@
 import {save, get} from './storage.js';
 
-document.getElementById('save_button').addEventListener('click', (event) => {
-	var searchTypeValue = document.getElementById('search_type_options').value;
+var saveTimeout;
+document.getElementById('search_type_options').addEventListener('change', (event) => {
+	var searchTypeElement = document.getElementById('search_type_options');
+	var selectedSearchType = searchTypeElement.options[searchTypeElement.selectedIndex];
+	var searchTypeValue = searchTypeElement.value;
 	save('searchType', searchTypeValue).then(() => {
-		var statusElement = document.getElementById('status')
-		statusElement.textContent = 'Search Type Saved';
-		setTimeout(() => {
+		var statusElement = document.getElementById('status');
+		statusElement.textContent = `Search Type (${selectedSearchType.text}) Saved`;
+		clearTimeout(saveTimeout);
+		saveTimeout = setTimeout(() => {
 			statusElement.textContent = '';
 		}, 5000);
 	});

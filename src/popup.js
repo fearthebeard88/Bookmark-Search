@@ -20,19 +20,26 @@ async function getBookmarks() {
 	return bookmarkBarCollection.children;
 }
 
-function getBookmarkFragment(bookmark) {
+function getBookmarkFragment(bookmark, renderSpecific = false) {
+	if(renderSpecific) {
+		if(bookmark.render != true) {
+			return null;
+		}
+	}
+
 	const template = document.getElementById('bookmark_list_template');
 	const content = template.content;
 	var fragment = content.firstElementChild.cloneNode(true);
 
 	fragment.querySelector('a').href = bookmark.url;
+	fragment.querySelector('a').title = bookmark.url;
 	fragment.querySelector('h3').textContent = bookmark.title;
 	return fragment;
 }
 
-function getBookmarkContainerFragment(parentBookmark) {
+function getBookmarkContainerFragment(parentBookmark, renderSpecific = false) {
 	if(parentBookmark.children == null || parentBookmark.children.length <= 0) {
-		return getBookmarkFragment(parentBookmark);
+		return getBookmarkFragment(parentBookmark, renderSpecific);
 	}
 
 	const template = document.getElementById('bookmark_list_folder_template');
@@ -41,8 +48,14 @@ function getBookmarkContainerFragment(parentBookmark) {
 	var bookmarks = parentBookmark.children;
 	var bookmarkFragments = [];
 	for(let bookmark of bookmarks) {
-		var childFragment = getBookmarkContainerFragment(bookmark);
-		bookmarkFragments.push(childFragment);
+		var childFragment = getBookmarkContainerFragment(bookmark, renderSpecific);
+		if(childFragment !== null) {
+			bookmarkFragments.push(childFragment);
+		}
+	}
+
+	if(bookmarkFragments.length <= 0) {
+		return null;
 	}
 
 	fragment.querySelector('.bookmark-folder-title').textContent = parentBookmark.title;
@@ -85,15 +98,17 @@ function getBookmarkMappings(bookmarks) {
 	return bookmarkMappings;
 }
 
-function renderBookmarks(bookmarks) {
+function renderBookmarks(bookmarks, renderSpecific = false) {
 	if(bookmarks == null) {
 		return;
 	}
 
 	var bookmarkFragments = [];
 	for(let bookmark of bookmarks) {
-		var fragment = getBookmarkContainerFragment(bookmark);
-		addBookmarkToSet(bookmarkFragments, fragment);
+		var fragment = getBookmarkContainerFragment(bookmark, renderSpecific);
+		if(fragment !== null) {
+			addBookmarkToSet(bookmarkFragments, fragment);
+		}
 	}
 
 	if(bookmarkFragments.length > 0) {
@@ -166,6 +181,10 @@ document.getElementById('bookmark_search').addEventListener('input', (event) => 
 				case 'STARTS':
 					regex = new RegExp(`^${inputString}`, 'i');
 					break;
+				case 'KEYWORD':
+					inputString = inputString.replace('\\s', '|');
+					regex = new RegExp(`${inputString}`, 'i');
+					break;
 				default:
 					regex = new RegExp(inputString, 'i');
 					break;
@@ -176,8 +195,12 @@ document.getElementById('bookmark_search').addEventListener('input', (event) => 
 				return test;
 			});
 
+			for(let i = 0, count = flatBookmarks.length; i < count; ++i) {
+				flatBookmarks[i].render = true;
+			}
+
 			if(flatBookmarks.length > 0) {
-				renderBookmarks(flatBookmarks);
+				renderBookmarks(bookmarks, true);
 			}
 		});
 	}, 500);

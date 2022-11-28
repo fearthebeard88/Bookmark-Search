@@ -15,7 +15,8 @@
 }
 
 html {
-	max-width: 500px;
+	/* max-width: 500px; */
+	width: 350px;
 }
 
 #bookmark-container {
@@ -78,4 +79,9 @@ html {
 #options_link::before {
 	font-family: var(--bookmark-font);
 	content: var(--gear);
+}
+
+#bookmark_search {
+	position: sticky;
+	top: 0;
 }

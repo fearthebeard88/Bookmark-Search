@@ -1,11 +1,14 @@
+body {
+	overflow: hidden;
+}
+
 #search_type {
 	display: flex;
 	gap: 5px;
 	justify-content: center;
 }
 
-#save_button_container {
-	display: flex;
-	justify-content: center;
-	margin-top: 10px;
+#status {
+	height: 20px;
+	text-align: center;
 }
