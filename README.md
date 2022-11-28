@@ -20,7 +20,6 @@ This extension is still under active development, and while it is fully function
 - [x] Add some kind of indication of which folder a bookmark is from in the search results for duplicate bookmark names
 - [x] Add tooltip to show the URL of the bookmark in the popup
 - [x] Implement a keywords search method
-	- [ ]  Implement the concept of AND/OR for keywords
 
 ## Future Goals
 - [ ] Implement a keyboard shortcut to access the bookmark search
