@@ -22,6 +22,6 @@ This extension is still under active development, and while it is fully function
 - [x] Implement a keywords search method
 
 ## Future Goals
-- [ ] Implement a keyboard shortcut to access the bookmark search
+- [x] Implement a keyboard shortcut to access the bookmark search
 - [ ] Implement a omnibox method of searching your bookmarks
 - [ ] Create a method of changing the search method using keywords and parsing it in the search function
