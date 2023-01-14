@@ -24,10 +24,9 @@
 	"commands": {
 		"_execute_action": {
 			"suggested_key": {
-				"default": "Ctrl+Shift+S"
+				"default": "Ctrl+Shift+F"
 			},
-			"description": "Open bookmark search popup form",
-			"global": "false"
+			"description": "Open bookmark search popup"
 		}
 	}
 }

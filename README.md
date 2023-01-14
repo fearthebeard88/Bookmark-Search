@@ -2,6 +2,10 @@
 
 This chrome extension is designed to help searching through bookmarks. Each search method looks through your bookmark titles.
 
+### Note: 
+The default keyboard shortcut is assigned to Control + Shift + F, if this does not work for you please check your extension shortcuts and 
+ensure you are not already using that key combination for a different shortcut.
+
 ## Currently Supported Search Methods
 - Contains
 - Equals (Exact match)
